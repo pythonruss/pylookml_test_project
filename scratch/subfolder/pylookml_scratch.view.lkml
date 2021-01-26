@@ -1,5 +1,5 @@
 
 
 view: pylookml_scratch {
-  dimension: test {  description: "SSH .tmp/pylookml_test_project PyLookML Auto Updated: Jan 18 2021 @ 10:32PM PST"  sql: ${hello} ;; } 
+  dimension: test {  description: "pyGithub pythonruss/pylookml_test_project PyLookML Auto Updated: Jan 25 2021 @ 04:14PM PST"  sql: ${hello} ;; } 
 }
