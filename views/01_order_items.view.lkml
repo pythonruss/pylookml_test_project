@@ -102,7 +102,9 @@ view: order_items {
        }
      } 
   }
-  dimension: reporting_period {  group_label: "Order Date"  sql: CASE
+  dimension: reporting_period {
+    group_label: "Order Date"
+    sql: CASE
         WHEN EXTRACT(YEAR from ${created_raw}) = EXTRACT(YEAR from CURRENT_TIMESTAMP())
         AND ${created_raw} < CURRENT_TIMESTAMP()
         THEN 'This Year to Date'
@@ -111,20 +113,30 @@ view: order_items {
         AND CAST(FORMAT_TIMESTAMP('%j', ${created_raw}) AS INT64) <= CAST(FORMAT_TIMESTAMP('%j', CURRENT_TIMESTAMP()) AS INT64)
         THEN 'Last Year to Date'
 
-      END ;; }
-  dimension: days_since_sold { hidden: yes  sql: TIMESTAMP_DIFF(${created_raw},CURRENT_TIMESTAMP(), DAY) ;; }
+      END ;; 
+  }
+  dimension: days_since_sold {
+    hidden: yes
+    sql: TIMESTAMP_DIFF(${created_raw},CURRENT_TIMESTAMP(), DAY) ;; 
+  }
   dimension: months_since_signup {
     view_label: "Orders"
     type: number
     sql: CAST(FLOOR(TIMESTAMP_DIFF(${created_raw}, ${users.created_raw}, DAY)/30) AS INT64) ;; 
   }
   dimension: status {  sql: ${TABLE}.status ;; }
-  dimension: days_to_process { type: number  sql: CASE
+  dimension: days_to_process {
+    type: number
+    sql: CASE
         WHEN ${status} = 'Processing' THEN TIMESTAMP_DIFF(CURRENT_TIMESTAMP(), ${created_raw}, DAY)*1.0
         WHEN ${status} IN ('Shipped', 'Complete', 'Returned') THEN TIMESTAMP_DIFF(${shipped_raw}, ${created_raw}, DAY)*1.0
         WHEN ${status} = 'Cancelled' THEN NULL
-      END ;; }
-  dimension: shipping_time { type: number  sql: TIMESTAMP_DIFF(${delivered_raw}, ${shipped_raw}, DAY)*1.0 ;; }
+      END ;; 
+  }
+  dimension: shipping_time {
+    type: number
+    sql: TIMESTAMP_DIFF(${delivered_raw}, ${shipped_raw}, DAY)*1.0 ;; 
+  }
   dimension: sale_price {
     type: number
     value_format_name: usd
@@ -157,7 +169,10 @@ view: order_items {
       ]
     style: interval 
   }
-  dimension: is_returned { type: yesno  sql: ${returned_raw} IS NOT NULL ;; }
+  dimension: is_returned {
+    type: yesno
+    sql: ${returned_raw} IS NOT NULL ;; 
+  }
   dimension: days_until_next_order {
     type: number
     view_label: "Repeat Purchase Facts"
@@ -168,7 +183,10 @@ view: order_items {
     view_label: "Repeat Purchase Facts"
     sql: ${days_until_next_order} <= 30 ;; 
   }
-  dimension: repeat_orders_within_15d { type: yesno  sql: ${days_until_next_order} <= 15 ;; }
+  dimension: repeat_orders_within_15d {
+    type: yesno
+    sql: ${days_until_next_order} <= 15 ;; 
+  }
   dimension: test_github_fast_file_exists_on_write {} 
   dimension_group: returned {
     type: time
@@ -209,7 +227,10 @@ view: order_items {
       ]
     sql: ${TABLE}.created_at ;; 
   } 
-  measure: count { type: count  drill_fields: [detail*] }
+  measure: count {
+    type: count
+    drill_fields: [detail*] 
+  }
   measure: count_last_28d {
     label: "Count Sold in Trailing 28 Days"
     type: count_distinct
