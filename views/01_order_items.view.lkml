@@ -235,8 +235,7 @@ view: order_items {
     label: "Count Sold in Trailing 28 Days"
     type: count_distinct
     sql: ${id} ;;
-    hidden: yes
-    filters: [ created_date:"28 days" ]  
+    hidden: yes 
   }
   measure: order_count {
     view_label: "Orders"
@@ -248,7 +247,6 @@ view: order_items {
     view_label: "Orders"
     type: count_distinct
     sql: ${order_id} ;;
-    filters: [ order_facts.is_first_purchase:"Yes" ] 
     drill_fields: [
       user_id, 
       users.name, 
@@ -312,14 +310,12 @@ view: order_items {
   measure: returned_count {
     type: count_distinct
     sql: ${id} ;;
-    filters: [ is_returned:"yes" ] 
     drill_fields: [detail*] 
   }
   measure: returned_total_sale_price {
     type: sum
     value_format_name: usd
-    sql: ${sale_price} ;;
-    filters: [ is_returned:"yes" ]  
+    sql: ${sale_price} ;; 
   }
   measure: return_rate {
     type: number
@@ -329,8 +325,7 @@ view: order_items {
   measure: count_with_repeat_purchase_within_30d {
     type: count_distinct
     sql: ${id} ;;
-    view_label: "Repeat Purchase Facts"
-    filters: [ repeat_orders_within_30d:"Yes" ]  
+    view_label: "Repeat Purchase Facts" 
   }
   measure: 30_day_repeat_purchase_rate {
     description: "The percentage of customers who purchase again within 30 days"
